@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtualenv
+.venv/
+env/
+venv/
+
+# Django stuff
+*.log
+*.pot
+*.mo
+*.pyc
+*.db
+*.sqlite3
+
+# PostgreSQL settings
+*.psql
+*.dump
+
+# Dotenv
+.env
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Migrations (optional)
+# theatre/migrations/
+# !theatre/migrations/__init__.py

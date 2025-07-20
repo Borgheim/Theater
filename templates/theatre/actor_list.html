@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Seznam herců{% endblock %}
+
+{% block content %}
+    <h1>Seznam herců</h1>
+    {% if actors %}
+        <ul>
+            {% for actor in actors %}
+                <li>{{ actor.first_name }} {{ actor.last_name }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Žádní herci nebyli nalezeni.</p>
+    {% endif %}
+{% endblock %}

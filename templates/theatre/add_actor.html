@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Přidat herce</h2>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Uložit</button>
+</form>
+
+<a href="{% url 'actor_list' %}">Zpět na seznam herců</a>
+{% endblock %}

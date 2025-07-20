@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Mahen Theatre{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul style="list-style: none; padding: 0; display: flex; gap: 1rem;">
+            <li><a href="{% url 'search' %}">Domů</a></li>
+            <li><a href="{% url 'actor_list' %}">Herci</a></li>
+            <li><a href="{% url 'director_list' %}">Režiséři</a></li>
+            {% if user.is_authenticated %}
+            <li>
+            Přihlášen jako <strong>{{ user.username }}</strong>
+            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Odhlásit se</button>
+            </form>
+        </li>
+    {% else %}
+        <li><a href="{% url 'login' %}">Přihlásit se</a></li>
+    {% endif %}
+</ul>
+
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>© JMV2025</p>
+    </footer>
+</body>
+</html>

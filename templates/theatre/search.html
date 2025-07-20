@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load extras %}
+
+{% block title %}Vyhledávání - Mahen Theatre{% endblock %}
+
+{% block content %}
+<h1>Vyhledávání v Mahenově divadle</h1>
+
+<form method="get" action="{% url 'search' %}">
+    <label for="actor">Herec:</label>
+    <input type="text" name="actor" id="actor" value="{{ query_actor }}" />
+
+    <label for="performance">Představení:</label>
+    <input type="text" name="performance" id="performance" value="{{ query_performance }}" />
+
+    <label for="director">Režisér:</label>
+    <input type="text" name="director" id="director" value="{{ query_director }}" />
+
+    <label for="stage">Scéna:</label>
+    <select name="stage" id="stage">
+        <option value="" {% if not stage_name %}selected{% endif %}>-- Vyber scénu --</option>
+        <option value="Malá scéna" {% if stage_name == "Malá scéna" %}selected{% endif %}>Malá scéna</option>
+        <option value="Velká scéna" {% if stage_name == "Velká scéna" %}selected{% endif %}>Velká scéna</option>
+    </select>
+
+    <button type="submit">Vyhledat</button>
+</form>
+
+<hr />
+
+{% if query_actor %}
+    <h2>Herci odpovídající "{{ query_actor }}"</h2>
+    {% if actors %}
+        <ul>
+        {% for actor in actors %}
+            <li>
+                {{ actor.first_name }} {{ actor.last_name }}
+                {% if actor.birth_date %}, narozen {{ actor.birth_date }}{% endif %}
+                <ul>
+                {% with roles=actor_roles|get_item:actor.id %}
+                    {% if roles %}
+                        {% for performance, role in roles %}
+                            <li>{{ performance.title }} ({{ performance.date }}): {{ role.name }}</li>
+                        {% endfor %}
+                    {% else %}
+                        <li>Žádné role nenalezeny.</li>
+                    {% endif %}
+                {% endwith %}
+                </ul>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nebyli nalezeni žádní herci.</p>
+    {% endif %}
+{% endif %}
+
+
+{% if query_director %}
+    <h2>Režiséři odpovídající "{{ query_director }}"</h2>
+    {% if directors %}
+        <ul>
+        {% for director in directors %}
+            <li>{{ director.first_name }} {{ director.last_name }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nebyli nalezeni žádní režiséři.</p>
+    {% endif %}
+{% endif %}
+
+{% if performances %}
+    <h2>Představení</h2>
+    <ul>
+    {% for performance in performances %}
+        <li>
+            <strong>{{ performance.title }}</strong> — {{ performance.date }} — Scéna: {{ performance.stage.name }}<br />
+            <strong>Herci:</strong>
+            {% for actor in performance.actors.all %}
+                {{ actor.first_name }} {{ actor.last_name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}<br />
+            <strong>Režisér:</strong>
+            {% if performance.director %}
+                {{ performance.director.first_name }} {{ performance.director.last_name }}
+            {% else %}
+                Neuveden
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    {% if query_actor or query_performance or query_director or stage_name %}
+        <p>Nebyla nalezena žádná představení.</p>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

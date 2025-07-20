@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Režiséři - Mahen Theatre{% endblock %}
+
+{% block content %}
+<h1>Seznam režisérů</h1>
+<ul>
+    {% for director in directors %}
+        <li>{{ director.first_name }} {{ director.last_name }}</li>
+    {% empty %}
+        <li>Žádní režiséři nebyli nalezeni.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
